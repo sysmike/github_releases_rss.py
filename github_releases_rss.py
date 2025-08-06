@@ -80,7 +80,7 @@ for rel in releases:
     ET.SubElement(entry, "id").text = rel['url']
     ET.SubElement(entry, "updated").text = rel['published_at']
 
-    # Format body using Markdown → HTML
+    # Format body using Markdown
     raw_body = rel["body"] or ""
     md_html = markdown.markdown(raw_body)
 
