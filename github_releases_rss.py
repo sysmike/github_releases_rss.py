@@ -1,8 +1,7 @@
-"""Script that fetch recent github releases and puts them in a RSS file"""
+"""Script that fetches recent github releases and puts them in a RSS file"""
 
 from datetime import datetime
 import xml.etree.ElementTree as ET
-from sys import exit
 import requests
 import markdown
 
@@ -26,11 +25,11 @@ PAGE = 1
 print("Fetching starred repositories...")
 
 while True:
-    paged_url = f"{STARRED_URL}?per_page=100&page={PAGE}"
-    response = requests.get(paged_url, headers=headers)
+    PAGED_URL = f"{STARRED_URL}?per_page=100&page={PAGE}"
+    response = requests.get(PAGED_URL, headers=headers)
     if response.status_code != 200:
         print(f"Error fetching starred repos: {response.status_code}")
-        sys.exit()
+        exit()
 
     data = response.json()
     if not data:
