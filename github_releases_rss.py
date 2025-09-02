@@ -4,6 +4,7 @@ from datetime import datetime
 import xml.etree.ElementTree as ET
 import requests
 import markdown
+import sys
 
 # === CONFIGURATION ===
 GITHUB_USERNAME = "your_username"
