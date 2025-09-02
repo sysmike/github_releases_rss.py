@@ -29,7 +29,7 @@ while True:
     response = requests.get(PAGED_URL, headers=headers, timeout=10)
     if response.status_code != 200:
         print(f"Error fetching starred repos: {response.status_code}")
-        exit()
+        sys.exit(1)
 
     data = response.json()
     if not data:
