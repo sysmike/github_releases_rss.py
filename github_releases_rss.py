@@ -1,9 +1,10 @@
-import os
-import requests
+"""Script that fetch recent github releases and puts them in a RSS file"""
+
 from datetime import datetime
 import xml.etree.ElementTree as ET
+from sys import exit
+import requests
 import markdown
-import html
 
 # === CONFIGURATION ===
 GITHUB_USERNAME = "your_username"
@@ -18,37 +19,37 @@ headers = {
 }
 
 # === STEP 1: Get Starred Repositories ===
-starred_url = f"https://api.github.com/users/{GITHUB_USERNAME}/starred"
-starred_repos = []
-page = 1
+STARRED_URL = f"https://api.github.com/users/{GITHUB_USERNAME}/starred"
+STARRED_REPOS = []
+PAGE = 1
 
 print("Fetching starred repositories...")
 
 while True:
-    paged_url = f"{starred_url}?per_page=100&page={page}"
+    paged_url = f"{STARRED_URL}?per_page=100&page={PAGE}"
     response = requests.get(paged_url, headers=headers)
     if response.status_code != 200:
         print(f"Error fetching starred repos: {response.status_code}")
-        exit()
+        sys.exit()
 
     data = response.json()
     if not data:
         break
 
-    starred_repos.extend(data)
-    page += 1
+    STARRED_REPOS.extend(data)
+    PAGE += 1
 
-print(f"Found {len(starred_repos)} starred repositories.")
+print(f"Found {len(STARRED_REPOS)} starred repositories.")
 
 # === STEP 2: Get Latest Releases ===
 releases = []
 
 print("Fetching releases from starred repos...")
 
-for repo in starred_repos:
+for repo in STARRED_REPOS:
     full_name = repo["full_name"]
-    releases_url = f"https://api.github.com/repos/{full_name}/releases/latest"
-    r = requests.get(releases_url, headers=headers)
+    RELEASES_URL = f"https://api.github.com/repos/{full_name}/releases/latest"
+    r = requests.get(RELEASES_URL, headers=headers)
 
     if r.status_code == 200:
         release = r.json()
@@ -80,7 +81,7 @@ for rel in releases:
     ET.SubElement(entry, "id").text = rel['url']
     ET.SubElement(entry, "updated").text = rel['published_at']
 
-    # Format body using Markdown
+    # Format body using Markdown → HTML
     raw_body = rel["body"] or ""
     md_html = markdown.markdown(raw_body)
 
