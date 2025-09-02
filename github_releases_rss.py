@@ -26,7 +26,7 @@ print("Fetching starred repositories...")
 
 while True:
     PAGED_URL = f"{STARRED_URL}?per_page=100&page={PAGE}"
-    response = requests.get(PAGED_URL, headers=headers)
+    response = requests.get(PAGED_URL, headers=headers, timeout=10)
     if response.status_code != 200:
         print(f"Error fetching starred repos: {response.status_code}")
         exit()
@@ -48,7 +48,7 @@ print("Fetching releases from starred repos...")
 for repo in STARRED_REPOS:
     full_name = repo["full_name"]
     RELEASES_URL = f"https://api.github.com/repos/{full_name}/releases/latest"
-    r = requests.get(RELEASES_URL, headers=headers)
+    r = requests.get(RELEASES_URL, headers=headers, timeout=10)
 
     if r.status_code == 200:
         release = r.json()
