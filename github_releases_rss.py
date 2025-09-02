@@ -1,10 +1,10 @@
 """Script that fetches recent github releases and puts them in a RSS file"""
 
 from datetime import datetime
+import sys
 import xml.etree.ElementTree as ET
 import requests
 import markdown
-import sys
 
 # === CONFIGURATION ===
 GITHUB_USERNAME = "your_username"
