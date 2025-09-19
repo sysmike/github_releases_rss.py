@@ -1,6 +1,6 @@
 """Script that fetches recent github releases and puts them in a RSS file"""
 
-from datetime import datetime
+import datetime
 import sys
 import xml.etree.ElementTree as ET
 import requests
@@ -71,7 +71,7 @@ print(f"Found {len(releases)} latest releases.")
 # === STEP 3: Build Atom Feed ===
 feed = ET.Element("feed", xmlns="http://www.w3.org/2005/Atom")
 ET.SubElement(feed, "title").text = f"Releases of {GITHUB_USERNAME}'s Starred Repos"
-ET.SubElement(feed, "updated").text = datetime.utcnow().isoformat() + "Z"
+ET.SubElement(feed, "updated").text = datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z"
 ET.SubElement(feed, "id").text = f"https://github.com/{GITHUB_USERNAME}/starred"
 
 for rel in releases:
